@@ -1,12 +1,15 @@
 import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
+import cors from "cors"
 import {connectToMongoDB, disconnectFromMongoDB} from "./config/mongodb-connect";
 import {authorRoutes} from "./routes/author-routes";
 import {ErrorMiddleware} from "./middlewares/error-middleware";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import {getEnv} from "./utils/env-value";
+import {corsOptions} from "./config/cors";
+import {bookRoutes} from "./routes/book-routes";
 
 // read .env file
 dotenv.config();
@@ -27,6 +30,7 @@ process.on('SIGTERM', async () => {
 // express setup
 const app = express();
 app.use(cookieParser());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan('dev'));
 
@@ -41,7 +45,9 @@ app.use(session({
     }
 }));
 
-app.use('/api', authorRoutes);
+// routes setup
+app.use('/api', authorRoutes)
+app.use('/api', bookRoutes);
 app.use(ErrorMiddleware);
 
 // server

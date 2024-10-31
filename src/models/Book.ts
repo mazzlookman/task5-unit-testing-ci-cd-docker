@@ -1,6 +1,6 @@
 import { Schema, model, Document, Types } from "mongoose";
 
-interface IBook extends Document {
+export interface IBook extends Document {
     title: string;
     author: Types.ObjectId;
     publisher: string;
@@ -17,7 +17,7 @@ const bookSchema = new Schema<IBook>({
     publisher: { type: String, required: true },
     publish_year: { type: String, required: true },
     genre: { type: String, required: true },
-    isbn: { type: String, required: true },
+    isbn: { type: String, required: true , unique: true},
 }, {
     timestamps: {
         createdAt: 'created_at',
