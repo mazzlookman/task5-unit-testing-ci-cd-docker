@@ -20,4 +20,12 @@ export class BookService {
         const books = await Book.find({}).populate('author', 'name email bio');
         return toAllBookResponses(books);
     }
+
+    static async getById(bookId: string) {
+        const book = await Book.findById(bookId);
+        if (!book) {
+            return {};
+        }
+        return toBookResponse(book);
+    }
 }

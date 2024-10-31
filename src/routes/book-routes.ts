@@ -6,3 +6,4 @@ export const bookRoutes = express.Router();
 
 bookRoutes.post('/books', authMiddleware, BookController.create);
 bookRoutes.get('/books', BookController.getAllBooks);
+bookRoutes.get('/books/:bookId', BookController.getById);
