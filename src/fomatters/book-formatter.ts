@@ -35,3 +35,12 @@ export function toBookResponse(book: IBook): BookResponse {
         updated_at: (book.created_at as Date).toLocaleString()
     }
 }
+
+export function toAllBookResponses(books: IBook[]): BookResponse[] {
+    const bookResponses: BookResponse[] = [];
+    books.forEach((value) => {
+        bookResponses.push(toBookResponse(value));
+    });
+
+    return bookResponses;
+}

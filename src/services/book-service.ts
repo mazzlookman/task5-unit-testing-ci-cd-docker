@@ -1,4 +1,4 @@
-import {CreateBook, toBookResponse} from "../fomatters/book-formatter";
+import {CreateBook, toAllBookResponses, toBookResponse} from "../fomatters/book-formatter";
 import {Book} from "../models/Book";
 import {Validation} from "../validations/schema";
 import {BookValidation} from "../validations/book-validation";
@@ -14,5 +14,10 @@ export class BookService {
             throw new CustomErrors(409, 'Conflict', 'Are you sure that this book is your original work?');
         }
         return toBookResponse(await new Book(bookRequest).save());
+    }
+
+    static async getAllBooks() {
+        const books = await Book.find({}).populate('author', 'name email bio');
+        return toAllBookResponses(books);
     }
 }

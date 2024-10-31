@@ -15,4 +15,13 @@ export class BookController {
             next(e);
         }
     }
+
+    static async getAllBooks(req: Request, res: Response, next: NextFunction) {
+        try {
+            const books = await BookService.getAllBooks();
+            res.status(200).json(books);
+        } catch (e) {
+            next(e);
+        }
+    }
 }
