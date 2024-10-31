@@ -18,7 +18,8 @@ export type AuthorResponse = {
     name: string;
     email: string;
     bio: string;
-    token?: string;
+    access_token?: string;
+    refresh_token?: string;
     created_at: string;
     updated_at: string;
 }
@@ -29,7 +30,7 @@ export function toAuthorResponse(author: IAuthor): AuthorResponse {
         name: author.name,
         email: author.email,
         bio: author.bio,
-        created_at: (author.created_at as Date).toString(),
-        updated_at: (author.updated_at as Date).toString()
+        created_at: (author.created_at as Date).toLocaleString(),
+        updated_at: (author.updated_at as Date).toLocaleString()
     }
 }

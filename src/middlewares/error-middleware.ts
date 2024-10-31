@@ -3,7 +3,7 @@ import {ZodError} from "zod";
 import {CustomErrors} from "../exceptions/custom-errors";
 import {validationErrorFormatter} from "../fomatters/validation-error-formatter";
 
-export const ErrorMiddleware = async (err: any, req: Request, res: Response, next: NextFunction) => {
+export const ErrorMiddleware = async (err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof ZodError) {
         res.status(422).json({
             code: 422,
@@ -17,6 +17,7 @@ export const ErrorMiddleware = async (err: any, req: Request, res: Response, nex
             errors: err.message
         });
     } else {
+        console.error(err)
         res.status(500).json({
             code: 500,
             status: "Internal Server Error",

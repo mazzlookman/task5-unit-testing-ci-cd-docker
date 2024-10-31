@@ -7,4 +7,9 @@ export class AuthorValidation {
         password: z.string().min(3).max(255),
         bio: z.string().min(3),
     })
+
+    static readonly LOGIN = z.object({
+        email: z.string().min(3).max(255).email(),
+        password: z.string().min(3).max(255),
+    })
 }

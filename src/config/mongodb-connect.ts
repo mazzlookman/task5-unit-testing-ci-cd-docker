@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
-
-const mongoURI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/books_management';
+import {getEnv} from "../utils/env-value";
 
 export const connectToMongoDB = async () => {
     try {
-        await mongoose.connect(mongoURI, {
+        await mongoose.connect(getEnv('MONGO_URI'), {
             dbName: 'books_management',
         });
         console.log('Successfully connected to MongoDB');
