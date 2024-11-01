@@ -1,7 +1,16 @@
 import {IBook} from "../models/Book";
 import {Types} from "mongoose";
 
-export type CreateBook = {
+export type CreateBookRequest = {
+    title: string;
+    author: string;
+    publisher: string;
+    publish_year: string;
+    genre: string;
+    isbn: string;
+}
+
+export type UpdateBookRequest = {
     title: string;
     author: string;
     publisher: string;
@@ -32,7 +41,7 @@ export function toBookResponse(book: IBook): BookResponse {
         genre: book.genre,
         isbn: book.isbn,
         created_at: (book.created_at as Date).toLocaleString(),
-        updated_at: (book.created_at as Date).toLocaleString()
+        updated_at: (book.updated_at as Date).toLocaleString()
     }
 }
 

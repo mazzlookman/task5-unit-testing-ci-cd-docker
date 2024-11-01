@@ -7,3 +7,5 @@ export const bookRoutes = express.Router();
 bookRoutes.post('/books', authMiddleware, BookController.create);
 bookRoutes.get('/books', BookController.getAllBooks);
 bookRoutes.get('/books/:bookId', BookController.getById);
+bookRoutes.patch('/books/:bookId', authMiddleware, BookController.update);
+bookRoutes.delete('/books/:bookId', authMiddleware, BookController.delete);

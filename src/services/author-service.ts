@@ -6,7 +6,6 @@ import {Author} from "../models/Author";
 import {CustomErrors} from "../exceptions/custom-errors";
 import jwt from "jsonwebtoken";
 import {getEnv} from "../utils/env-value";
-import {AuthorController} from "../controllers/author-controller";
 
 export class AuthorService {
     static async register(request: CreateAuthorRequest): Promise<AuthorResponse> {
@@ -41,9 +40,13 @@ export class AuthorService {
         }
 
         const response = toAuthorResponse(author);
+        const jwtPayload = {
+            _id: response._id,
+            email: response.email
+        }
 
-        const accessToken = jwt.sign(response, getEnv('SECRET_KEY'), { expiresIn: '1h' });
-        const refreshToken = jwt.sign(response, getEnv('REFRESH_SECRET_KEY'), { expiresIn: '7d' });
+        const accessToken = jwt.sign(jwtPayload, getEnv('SECRET_KEY'), { expiresIn: '1d' });
+        const refreshToken = jwt.sign(jwtPayload, getEnv('REFRESH_SECRET_KEY'), { expiresIn: '7d' });
 
         response.access_token = accessToken;
         response.refresh_token = refreshToken;
