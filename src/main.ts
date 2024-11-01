@@ -10,6 +10,8 @@ import cookieParser from "cookie-parser";
 import {getEnv} from "./utils/env-value";
 import {corsOptions} from "./config/cors";
 import {bookRoutes} from "./routes/book-routes";
+import swaggerUi from 'swagger-ui-express';
+import {swaggerSpec} from "./config/swagger";
 
 // read .env file
 dotenv.config();
@@ -44,6 +46,10 @@ app.use(session({
         httpOnly: true
     }
 }));
+
+// api docs
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// app.use('/docs-dum', swaggerUi.serve, swaggerUi.setup(swaggerSpecDummy));
 
 // routes setup
 app.use('/api', authorRoutes)
