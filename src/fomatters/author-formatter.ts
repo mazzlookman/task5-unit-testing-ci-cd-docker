@@ -24,6 +24,11 @@ export type AuthorResponse = {
     updated_at: string;
 }
 
+export type JwtPayloadCustom = {
+    _id: string,
+    email: string
+}
+
 export function toAuthorResponse(author: IAuthor): AuthorResponse {
     return {
         _id: (author._id as Types.ObjectId).toString(),

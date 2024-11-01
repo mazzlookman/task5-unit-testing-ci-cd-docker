@@ -1,5 +1,11 @@
 import bcrypt from "bcrypt";
-import {AuthorResponse, CreateAuthorRequest, LoginAuthorRequest, toAuthorResponse} from "../fomatters/author-formatter";
+import {
+    AuthorResponse,
+    CreateAuthorRequest,
+    JwtPayloadCustom,
+    LoginAuthorRequest,
+    toAuthorResponse
+} from "../fomatters/author-formatter";
 import {Validation} from "../validations/schema";
 import {AuthorValidation} from "../validations/author-validation";
 import {Author} from "../models/Author";
@@ -40,7 +46,7 @@ export class AuthorService {
         }
 
         const response = toAuthorResponse(author);
-        const jwtPayload = {
+        const jwtPayload: JwtPayloadCustom = {
             _id: response._id,
             email: response.email
         }
@@ -52,5 +58,14 @@ export class AuthorService {
         response.refresh_token = refreshToken;
 
         return response;
+    }
+
+    static async getProfile(authorId: string) {
+        const author = await Author.findById(authorId);
+        if (!author) {
+            throw new CustomErrors(404, 'Not Found', 'Author not found');
+        }
+
+        return toAuthorResponse(author);
     }
 }

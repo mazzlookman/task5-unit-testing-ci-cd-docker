@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import {AuthorResponse, CreateAuthorRequest, LoginAuthorRequest} from "../fomatters/author-formatter";
+import {AuthorResponse, CreateAuthorRequest, JwtPayloadCustom, LoginAuthorRequest} from "../fomatters/author-formatter";
 import {AuthorService} from "../services/author-service";
 import {CustomRequest} from "../utils/custom-express-request";
 import {toAPIResponse} from "../fomatters/api-response";
@@ -37,7 +37,9 @@ export class AuthorController {
 
     static async getProfile(req: CustomRequest, res: Response, next: NextFunction) {
         try {
-            const author = req.session.author;
+            const sessionData = req.session.author as JwtPayloadCustom;
+
+            const author = await AuthorService.getProfile(sessionData._id);
             res.status(200).json(toAPIResponse(200, 'OK', author));
         } catch (err) {
             next(err);
