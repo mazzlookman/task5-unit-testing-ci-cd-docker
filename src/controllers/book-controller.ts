@@ -3,6 +3,7 @@ import {CustomRequest} from "../utils/custom-express-request";
 import {BookService} from "../services/book-service";
 import {CreateBookRequest, UpdateBookRequest} from "../fomatters/book-formatter";
 import {toAPIResponse} from "../fomatters/api-response";
+import {JwtPayloadCustom} from "../fomatters/author-formatter";
 
 export class BookController {
     static async create(req: CustomRequest, res: Response, next: NextFunction) {
@@ -35,22 +36,25 @@ export class BookController {
         }
     }
 
-    static async update(req: Request, res: Response, next: NextFunction) {
+    static async update(req: CustomRequest, res: Response, next: NextFunction) {
         try {
             const bookId = req.params.bookId;
             const request = req.body as UpdateBookRequest;
+            const authorId = (req.session.author as JwtPayloadCustom)._id;
 
-            const book = await BookService.update(bookId, request);
+            const book = await BookService.update(bookId, authorId, request);
             res.status(200).json(toAPIResponse(200, 'OK', book));
         } catch (e) {
             next(e);
         }
     }
 
-    static async delete(req: Request, res: Response, next: NextFunction) {
+    static async delete(req: CustomRequest, res: Response, next: NextFunction) {
         try {
             const bookId = req.params.bookId;
-            const isDeleted = await BookService.delete(bookId);
+            const authorId = (req.session.author as JwtPayloadCustom)._id;
+
+            const isDeleted = await BookService.delete(bookId, authorId);
             res.status(200).json(toAPIResponse(200, 'OK', { is_deleted: isDeleted }));
         } catch (e) {
             next(e);

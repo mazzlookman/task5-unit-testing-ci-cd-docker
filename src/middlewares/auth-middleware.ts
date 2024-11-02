@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import jwt, {JwtPayload} from "jsonwebtoken";
+import { Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
 import {CustomErrors} from "../exceptions/custom-errors";
 import {CustomRequest} from "../utils/custom-express-request";
 import {getEnv} from "../utils/env-value";
