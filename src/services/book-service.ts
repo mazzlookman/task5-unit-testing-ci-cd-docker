@@ -1,10 +1,10 @@
-import {CreateBookRequest, toAllBookResponses, toBookResponse, UpdateBookRequest} from "../fomatters/book-formatter";
+import {CreateBookRequest, toAllBookResponses, toBookResponse, UpdateBookRequest} from "../formatters/book-formatter";
 import {Book, IBook} from "../models/Book";
 import {Validation} from "../validations/schema";
 import {BookValidation} from "../validations/book-validation";
 import {CustomErrors} from "../exceptions/custom-errors";
 import {Types} from "mongoose";
-import {UserServiceUtil} from "../utils/user-service-util";
+import {AuthorServiceUtil} from "../utils/author-service-util";
 
 export class BookService {
     static async create(authorId: string, request: CreateBookRequest) {
@@ -24,11 +24,13 @@ export class BookService {
     }
 
     static async getById(bookId: string) {
-        if (!Types.ObjectId.isValid(bookId)) {
-            throw new CustomErrors(400, 'Invalid ID', 'The book ID provided is not valid');
+        // check if objectId is valid ?
+        const validBookId = AuthorServiceUtil.isValidObjectId(bookId);
+        if (!validBookId) {
+            throw new CustomErrors(400, 'Bad Request', 'Invalid book id');
         }
 
-        const book = await Book.findById(bookId);
+        const book = await Book.findById(bookId).populate('author', 'name email bio');
         if (!book) {
             throw new CustomErrors(404, 'Not Found', 'Book not found');
         }
@@ -37,7 +39,10 @@ export class BookService {
 
     static async update(bookId: string, authorId: string, request: UpdateBookRequest) {
         // check if objectId is valid ?
-        UserServiceUtil.validObjectIdCheck(bookId);
+        const validBookId = AuthorServiceUtil.isValidObjectId(bookId);
+        if (!validBookId) {
+            throw new CustomErrors(400, 'Bad Request', 'Invalid book id');
+        }
 
         const bookRequest = Validation.validate(BookValidation.UPDATE, request);
         const bookBefore = await Book.findById(bookId).populate('author', '_id');
@@ -48,7 +53,10 @@ export class BookService {
         }
 
         // Check if the author is currently the owner of the book?
-        UserServiceUtil.isAuthorOfBookCheck(bookBefore!.author._id, authorId);
+        const isAuthor = AuthorServiceUtil.isAuthorOfBook(bookBefore!.author._id, authorId);
+        if (!isAuthor) {
+            throw new CustomErrors(403, 'Forbidden', `You are not the owner of this book`);
+        }
 
         const updateData: Partial<IBook> = {};
         if (bookRequest.title) updateData.title = bookRequest.title;
@@ -68,14 +76,17 @@ export class BookService {
     }
 
     static async delete(bookId: string, authorId: string) {
-        UserServiceUtil.validObjectIdCheck(bookId);
+        AuthorServiceUtil.isValidObjectId(bookId);
 
         const bookBeforeDeleted = await Book.findById(bookId).populate('author', '_id');
         if (!bookBeforeDeleted) {
             throw new CustomErrors(404, 'Not Found', 'Book not found');
         }
 
-        UserServiceUtil.isAuthorOfBookCheck(bookBeforeDeleted.author._id, authorId);
+        const isAuthor = AuthorServiceUtil.isAuthorOfBook(bookBeforeDeleted.author._id, authorId);
+        if (!isAuthor) {
+            throw new CustomErrors(403, 'Forbidden', `You are not the owner of this book`);
+        }
 
         // delete the book
         await Book.deleteOne({ _id: bookId });

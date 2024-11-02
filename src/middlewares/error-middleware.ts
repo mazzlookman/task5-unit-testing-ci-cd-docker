@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import {ZodError} from "zod";
 import {CustomErrors} from "../exceptions/custom-errors";
-import {validationErrorFormatter} from "../fomatters/validation-error-formatter";
+import {validationErrorFormatter} from "../formatters/validation-error-formatter";
 
 export const ErrorMiddleware = async (err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof ZodError) {
@@ -17,7 +17,6 @@ export const ErrorMiddleware = async (err: Error, req: Request, res: Response, n
             errors: err.message
         });
     } else {
-        console.error(err)
         res.status(500).json({
             code: 500,
             status: "Internal Server Error",

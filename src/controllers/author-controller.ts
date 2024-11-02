@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import {AuthorResponse, CreateAuthorRequest, JwtPayloadCustom, LoginAuthorRequest} from "../fomatters/author-formatter";
+import {CreateAuthorRequest, JwtPayloadCustom, LoginAuthorRequest} from "../formatters/author-formatter";
 import {AuthorService} from "../services/author-service";
 import {CustomRequest} from "../utils/custom-express-request";
-import {toAPIResponse} from "../fomatters/api-response";
+import {toAPIResponse} from "../formatters/api-response";
 
 export class AuthorController {
     static async register(req: Request, res: Response, next: NextFunction) {

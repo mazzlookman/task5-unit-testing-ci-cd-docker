@@ -30,7 +30,7 @@ process.on('SIGTERM', async () => {
 });
 
 // express setup
-const app = express();
+export const app = express();
 app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -49,7 +49,6 @@ app.use(session({
 
 // api docs
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-// app.use('/docs-dum', swaggerUi.serve, swaggerUi.setup(swaggerSpecDummy));
 
 // routes setup
 app.use('/api', authorRoutes)

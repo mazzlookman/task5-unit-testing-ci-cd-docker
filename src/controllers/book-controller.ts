@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import {CustomRequest} from "../utils/custom-express-request";
 import {BookService} from "../services/book-service";
-import {CreateBookRequest, UpdateBookRequest} from "../fomatters/book-formatter";
-import {toAPIResponse} from "../fomatters/api-response";
-import {JwtPayloadCustom} from "../fomatters/author-formatter";
+import {CreateBookRequest, UpdateBookRequest} from "../formatters/book-formatter";
+import {toAPIResponse} from "../formatters/api-response";
+import {JwtPayloadCustom} from "../formatters/author-formatter";
 
 export class BookController {
     static async create(req: CustomRequest, res: Response, next: NextFunction) {

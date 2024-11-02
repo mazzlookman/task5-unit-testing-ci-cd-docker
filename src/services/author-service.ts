@@ -5,7 +5,7 @@ import {
     JwtPayloadCustom,
     LoginAuthorRequest,
     toAuthorResponse
-} from "../fomatters/author-formatter";
+} from "../formatters/author-formatter";
 import {Validation} from "../validations/schema";
 import {AuthorValidation} from "../validations/author-validation";
 import {Author} from "../models/Author";

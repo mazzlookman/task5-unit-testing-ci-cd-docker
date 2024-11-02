@@ -22,6 +22,8 @@ export type AuthorResponse = {
     refresh_token?: string;
     created_at: string;
     updated_at: string;
+    // in bellow, just for unit test
+    password?: string;
 }
 
 export type JwtPayloadCustom = {
