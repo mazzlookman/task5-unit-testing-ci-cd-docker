@@ -5,7 +5,8 @@
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "dev": "nodemon --watch src --ext ts --exec ts-node src/main.ts"
+    "dev": "nodemon --watch src --ext ts --exec ts-node src/main.ts",
+    "build": "tsc"
   },
   "jest": {
     "transform": {

@@ -1,5 +1,9 @@
 # [Task 4] Express JS, MongoDB, Swagger
 
+# Task4 Books Management API
+
+![CI/CD](https://github.com/mazzlookman/task5-unit-testing-ci-cd-docker/actions/workflows/action.yml/badge.svg)
+
 ## Features
 Aplikasi ini memiliki fitur seperti berikut:
 1. CRUD Buku: Tambah, lihat, perbarui, dan hapus buku. ✅
