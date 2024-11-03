@@ -1,6 +1,6 @@
-# [Task 4] Express JS, MongoDB, Swagger
+# [Task 5] Unit Testing, CI/CD Introduction, and Docker
 
-# Task4 Books Management API
+# Books Management API - Build status
 
 ![CI/CD](https://github.com/mazzlookman/task5-unit-testing-ci-cd-docker/actions/workflows/action.yml/badge.svg)
 
@@ -16,6 +16,7 @@ Aplikasi ini memiliki fitur seperti berikut:
    kode buku yang duplikat, atau gagal login. ✅
 
 ## How to run?
+### Run server
 Follow the steps below sequentially.
 
 Open git bash or terminal, and type:
@@ -49,6 +50,23 @@ npm run dev
 ```
 
 It will run on `http://localhost:3000`
+
+### Run unit test
+- without coverage
+```shell
+npm test
+```
+
+- with coverage
+```shell
+npm run test:coverage
+```
+
+It will produce a folder `./coverage` in root directory, containing html files (in `./coverage/Icov-report/index.html`) that show the coverage results. 
+<br>As bellow picture:
+
+![test-coverage](https://ik.imagekit.io/aqibmoh/Screenshot%202024-11-03%20142137.png?updatedAt=1730618540886)
+
 
 ## API Documentation
 You can see at `http://localhost:3000/docs`
