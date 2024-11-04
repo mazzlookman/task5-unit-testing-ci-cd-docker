@@ -1,6 +1,6 @@
-import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerJSDoc, {OAS3Definition} from 'swagger-jsdoc';
 
-const swaggerDefinition = {
+const swaggerDefinition: OAS3Definition = {
     openapi: '3.0.0',
     info: {
         title: 'Books Management API',

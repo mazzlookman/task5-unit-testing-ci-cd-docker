@@ -1,23 +1,30 @@
-name: CI/CD Pipeline for Book Management API
+name: CI/CD for Book Management API
 
 on:
   push:
     branches:
       - main
+      - master
       - 'feature/*'
       - 'bugfix/*'
   pull_request:
     branches:
       - main
+      - master
       - 'feature/*'
       - 'bugfix/*'
+env:
+  MONGO_URI: ${{ secrets.MONGODB_URI }}
+  PORT: ${{ vars.PORT }}
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  REFRESH_SECRET_KEY: ${{ secrets.REFRESH_SECRET_KEY }}
 
 jobs:
-  build:
+  project-test-and-build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Clone code from repository
+    - name: Clone repository
       uses: actions/checkout@v4
 
     - name: Set up Node.js
@@ -34,16 +41,26 @@ jobs:
     - name: Build project
       run: npm run build
 
-    - name: Login to Docker Hub
-      if: github.ref == 'refs/heads/main'
-      uses: docker/login-action@v3
-      with:
-        username: ${{ vars.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+  docker-build-and-push-image:
+    needs: project-test-and-build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
 
-    - name: Build and push image to Docker Hub
-      if: github.ref == 'refs/heads/main'
-      uses: docker/build-push-action@v6
-      with:
-        push: true
-        tags: mazzlookman/books-management-api:latest
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push image to Docker Hub
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: mazzlookman/books-management-api:latest
